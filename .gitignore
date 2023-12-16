@@ -1,0 +1,5 @@
+db_data/*
+**/.idea/*
+**/data/**
+!**/data/hired_employees.csv
+

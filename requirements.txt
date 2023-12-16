@@ -1,0 +1,10 @@
+Django
+requests
+pandas
+psycopg2-binary
+tqdm
+click
+sqlalchemy
+django-filter
+django-cors-headers
+djangorestframework
