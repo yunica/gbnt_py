@@ -16,12 +16,13 @@ class IndexView(TemplateView):
 # crud
 
 # query section 2
-class EmployeByDepartJobQuarter(ViewSet):
+class EmployeeByDepartJobQuarter(ViewSet):
     def list(self, request):
         year = int(request.GET.get("year", 2021))
         # get quartes
         hired_employees_ = models.HiredEmployees.objects.filter(
-            datetime__year=year
+            datetime__year=year,
+            department__isnull=False
         ).annotate(
             quarter=ExtractQuarter('datetime'),
             # rename fields
@@ -45,3 +46,31 @@ class EmployeByDepartJobQuarter(ViewSet):
             'departments', 'jobs',
         )
         return Response(list(quarter_counts), status=status.HTTP_200_OK)
+
+
+class EmployeByHiredByDepartment(ViewSet):
+    def list(self, request):
+        year = int(request.GET.get("year", 2021))
+        total_hired_by_department = models.HiredEmployees.objects.filter(
+            datetime__year=year,
+            department__isnull=False
+        ).values(
+            'department'
+        ).annotate(
+            hired=Count('id')
+        )
+        # calculate
+        total_hired_list = [item['hired'] for item in total_hired_by_department]
+        average_hired = sum(total_hired_list) / len(total_hired_list) if total_hired_list else 0
+        # query filter
+        departments_average = models.HiredEmployees.objects.filter(
+            datetime__year=2021,
+            department__isnull=False
+        ).values(
+            'department__id', 'department__department'
+        ).annotate(
+            hired=Count('id')
+        ).filter(
+            hired__gt=average_hired
+        ).order_by('-hired')
+        return Response(list(departments_average), status=status.HTTP_200_OK)
