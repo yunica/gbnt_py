@@ -3,3 +3,4 @@ db_data/*
 **/data/**
 !**/data/hired_employees.csv
 
+**/__pycache__/**

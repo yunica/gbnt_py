@@ -20,6 +20,7 @@ DATA_EXTERNAL_URLS = {
     "hired_employees.csv": {
         "columns": ["id", "name", "datetime", "department_id", "job_id"],
         "int_columns": ["department_id", "job_id"],
+        "date_columns": ["datetime"],
     },
 }
 
@@ -36,11 +37,11 @@ def download_data(url, folder_path, file_name):
     total_size_in_bytes = int(response.headers.get("content-length", 0))
 
     with open(f"{folder_path}/{file_name}", "wb") as file, tqdm(
-        desc=f"{folder_path}/{file_name}",
-        total=total_size_in_bytes,
-        unit="iB",
-        unit_scale=True,
-        unit_divisor=1024,
+            desc=f"{folder_path}/{file_name}",
+            total=total_size_in_bytes,
+            unit="iB",
+            unit_scale=True,
+            unit_divisor=1024,
     ) as bar:
         for data in response.iter_content(block_size):
             bar.update(len(data))
@@ -57,18 +58,20 @@ def save_database(table_name_path, engine):
     # spetial case (int null float )
     for int_colum in metadata.get("int_columns", []):
         df[int_colum] = df[int_colum].astype("Int64")
+    for int_colum in metadata.get("date_columns", []):
+        df[int_colum] = pd.to_datetime(df[int_colum])
 
     # df.to_csv(table_name_path, index=False)
     dataframe_to_db(df, table_name.split(".")[0], engine)
 
 
 def process(
-    folder_path,
-    database_db,
-    database_user,
-    database_password,
-    database_port,
-    database_host,
+        folder_path,
+        database_db,
+        database_user,
+        database_password,
+        database_port,
+        database_host,
 ):
     # dowload data
     [
