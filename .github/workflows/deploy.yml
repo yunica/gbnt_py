@@ -1,0 +1,30 @@
+name: PRODUCTION DEPLOY
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2 
+      - name: Build & Deploy
+        env:
+            PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+            HOSTNAME: ${{secrets.SSH_HOST}}
+            USER_NAME: ${{secrets.USER_NAME}}
+      
+        run: |
+            echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+
+            ssh -o StrictHostKeyChecking=no -i globant.pem ${USER_NAME}@${HOSTNAME} '
+
+            # on ssh
+            cd ~/app/gbnt_py
+            git pull origin main
+            docker compose down
+            docker compose build
+            docker compose up -d
+            '
