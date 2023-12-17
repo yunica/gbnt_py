@@ -1,3 +1,7 @@
+## production
+
+this app live in [link](http://18.231.175.127/)
+
 ## run
 
 ```shell
@@ -21,3 +25,11 @@ in the [admin](http://localhost/admin/) page.
 - django
 - pandas
 - docker
+
+### ci/cd
+
+- github actions
+
+### cloud
+
+- aws ec2
