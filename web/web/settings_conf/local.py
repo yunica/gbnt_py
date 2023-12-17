@@ -8,7 +8,7 @@ DATABASES = {
         "NAME": environ.get("POSTGRES_DB", "postgres"),
         "USER": environ.get("POSTGRES_USER", "postgres"),
         "PASSWORD": environ.get("POSTGRES_PASSWORD", "postgres"),
-        "HOST": environ.get("POSTGRES_HOST", "localhost"),
+        "HOST": environ.get("DATABASE_HOST", "localhost"),
         "PORT": environ.get("POSTGRES_PORT", "5432"),
         "CONN_MAX_AGE": 60,
     }

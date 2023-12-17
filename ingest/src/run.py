@@ -35,16 +35,16 @@ from migrate import process
 @click.option(
     "--database_host",
     help="database host ",
-    default="db",
+    envvar="DATABASE_HOST",
     type=str,
 )
 def main(
-    folder_path,
-    database_db,
-    database_user,
-    database_password,
-    database_port,
-    database_host,
+        folder_path,
+        database_db,
+        database_user,
+        database_password,
+        database_port,
+        database_host,
 ):
     process(
         folder_path,
