@@ -17,7 +17,8 @@ jobs:
             USER_NAME: ${{secrets.USER_NAME}}
       
         run: |
-            echo "$PRIVATE_KEY" > globant.pem && chmod 600 globant.pem
+            echo "$PRIVATE_KEY" > globant.pem 
+            chmod 600 globant.pem
 
             ssh -o StrictHostKeyChecking=no -i globant.pem ${USER_NAME}@${HOSTNAME} '
 
