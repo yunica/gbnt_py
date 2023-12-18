@@ -33,3 +33,11 @@ in the [admin](http://localhost/admin/) page.
 ### cloud
 
 - aws ec2
+
+## test
+
+for test api run 
+
+```shell
+ python manage.py test -v 3     
+```
