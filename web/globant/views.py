@@ -67,7 +67,7 @@ class EmployeByHiredByDepartment(ViewSet):
 
         total_hired_by_department = (
             models.HiredEmployees.objects.filter(
-                datetime__year=year, department__isnull=False
+                datetime__year=year
             )
             .values("department")
             .annotate(hired=Count("id"))
@@ -80,7 +80,7 @@ class EmployeByHiredByDepartment(ViewSet):
         # query filter
         departments_average = (
             models.HiredEmployees.objects.filter(
-                datetime__year=2021, department__isnull=False
+                datetime__year=year
             )
             .values("department__id", "department__department")
             .annotate(hired=Count("id"))
